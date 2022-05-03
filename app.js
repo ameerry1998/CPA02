@@ -21,6 +21,8 @@ const axios = require("axios")
 const ToDoItem = require("./models/ToDoItem")
 const Course = require('./models/Course')
 const Schedule = require('./models/Schedule')
+const Journal = require('./models/Journal')
+
 
 // *********************************************************** //
 //  Loading JSON datasets
@@ -34,7 +36,7 @@ const courses = require('./public/data/courses20-21.json')
 
 const mongoose = require( 'mongoose' );
 //const mongodb_URI = 'mongodb://localhost:27017/cs103a_todo'
-const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const mongodb_URI = 'mongodb+srv://Ameerry1:Ameerry206611667@cluster0.zfsi4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 //mongodb+srv://cs103a:<password>@cluster0.kgugl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
@@ -113,6 +115,39 @@ app.get("/", (req, res, next) => {
 app.get("/about", (req, res, next) => {
   res.render("about");
 });
+
+app.get('/journal/',
+isLoggedIn,   // redirect to /login if user is not logged in
+async (req,res,next) => {
+  try{
+    let userId = res.locals.user._id;  // get the user's id
+    let items = await Journal.find({userId:userId}); // lookup the user's todo items
+    res.locals.items = items;  //make the items available in the view
+    res.render("journal");
+  } catch (e){
+    next(e);
+  }
+}
+)
+
+app.post('/journal/add',
+isLoggedIn,
+async (req,res,next) => {
+  try{
+    const {date,time,journal,hours_slept} = req.body; // get title and description from the body
+    const userId = res.locals.user._id; // get the user's id
+    const createdAt = new Date(); // get the current date/time
+    const emotion = req.body.emotion;
+    console.log(emotion);
+    let data = {date,time,emotion,journal,hours_slept,userId, createdAt,} // create the data object
+    let item = new Journal(data) // create the database object (and test the types are correct)
+    await item.save() // save the todo item in the database
+    res.redirect('/journal')  // go back to the todo page
+  } catch (e){
+    next(e);
+  }
+}
+)
 
 
 
@@ -396,6 +431,7 @@ app.set("port", port);
 
 // and now we startup the server listening on that port
 const http = require("http");
+const { resolve4 } = require("dns");
 const server = http.createServer(app);
 
 server.listen(port);
