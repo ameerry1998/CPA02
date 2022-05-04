@@ -1,9 +1,12 @@
-# COSI103 PA3 
+# COSI103 CPA02 
 
-Team Members: Aichuk Tripura, Ameer Rayan
+Team Members: Ameer Rayan
 
 ## Demo Video
-https://drive.google.com/file/d/12Plr6XVHP2gdRVcZ-FP6vg3hHsv5SdTy/view?usp=sharing
+https://drive.google.com/file/d/1_UP79Gt3HzoHggpcjsjmivJpl-L1YcFF/view?usp=sharing
+
+## Motivation
+the motivation being this app is to allow you to have an online journal which you have access to from anywhere. 
 
 ## Installation
 Download the project from github and download nodejs and npm from https://nodejs.org
@@ -25,4 +28,9 @@ and start the project with
 ``` bash
 nodemon
 ```
+
+```
+There is no need to start a mongo server locally
+```
+
 
