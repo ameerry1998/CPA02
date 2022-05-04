@@ -434,7 +434,7 @@ const http = require("http");
 const { resolve4 } = require("dns");
 const server = http.createServer(app);
 
-server.listen(port);
+server.listen(process.env.PORT || port);
 
 function onListening() {
   var addr = server.address();
